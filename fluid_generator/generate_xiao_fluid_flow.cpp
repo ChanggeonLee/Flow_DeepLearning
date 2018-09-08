@@ -1,4 +1,4 @@
-/************************************************************************
+/***********************************************************************
  * MechSys - Open Library for Mechanical Systems                        *
  * Copyright (C) 2009 Sergio Galindo                                    *
  *                                                                      *
@@ -217,16 +217,20 @@ int main(int argc, char **argv) try
         exit(1);
     }
     size_t Nproc = 1; 
-    //double u_max  = 0.1;                // Poiseuille's maximum velocity
-    double u_max = atoi(argv[4]);
+    double u_max  = 0;                // Poiseuille's maximum velocity
+    if (argc == 4){
+        u_max = atof(argv[3]);
+    }
+    printf("%d",atoi(argv[3]));
+    printf("%lf",u_max);
     double Re     = 400.0;                  // Reynold's number
     size_t nx = 2*atoi(argv[1]) + 128;
     size_t ny = atoi(argv[1]);
     double nu     = u_max*(200)/Re; // viscocity (hard set now)
     int use_car = 0;
-    if (argc==4) {
-        use_car = 1;
-    }
+    //if (argc==4) {
+      //  use_car = 1;
+    //}
     FLBM::Domain Dom(D2Q9, nu, iVec3_t(nx,ny,1), 1.0, 1.0);
     
     UserData dat;
