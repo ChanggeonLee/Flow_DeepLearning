@@ -1,5 +1,0 @@
-
-#!/bin/bash
-./run_bunch_xiao 128 300
-./run_bunch_xiao 128 20 test
-
