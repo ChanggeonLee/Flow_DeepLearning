@@ -16,7 +16,7 @@ eggs/
 .eggs/
 lib/
 lib64/
-parts/
+train.tfrecordsparts/
 sdist/
 var/
 wheels/
@@ -108,3 +108,8 @@ venv.bak/
 *.txt
 
 Adata/
+steady/
+*.h5
+model_save/
+data/
+model/
