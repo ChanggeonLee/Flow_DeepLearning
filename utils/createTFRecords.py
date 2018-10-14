@@ -16,8 +16,8 @@ tf.app.flags.DEFINE_bool('debug', False,
 def _bytes_feature(value):
   return tf.train.Feature(bytes_list=tf.train.BytesList(value=[value]))
 
-def _int64_feature(value):
-  return tf.train.Feature(int64_list=tf.train.Int64List(value=[value]))
+#def _float32_feature(value):
+# return tf.train.Feature(float32_list=tf.train.FloatList(value=[value]))
 
 # create tf writer
 record_filename = '../data/train.tfrecords'
@@ -40,14 +40,16 @@ for  filename in tqdm(train_filename):
     flow_name = run + '/fluid_flow_0002.h5'
     boundary = load_boundary(flow_name, shape)
     sflow = load_flow(flow_name, shape)
+    vmax = []
     if "0.01" in run:
-      vmax = 0
+      v = 0.
     elif "0.05" in run:
-      vmax = 1
+      v = 1.
     elif "0.1" in run:
-      vmax = 2
+      v = 2.
 
-    print(vmax)
+    for i in range(1024):
+      vmax.append(v)
     
     # Display the resulting frame
     if FLAGS.debug == True:
@@ -63,11 +65,15 @@ for  filename in tqdm(train_filename):
     sflow = np.float32(sflow)
     sflow = sflow.reshape([1,shape[0]*shape[1]*2])
     sflow = sflow.tostring()
+    
+    vmax = np.float32(vmax)
+    vmax = vmax.reshape([1,1024])
+    vmax = vmax.tostring()
   
     # create example and write it
     example = tf.train.Example(features=tf.train.Features(feature={
       'boundary': _bytes_feature(boundary),
       'sflow': _bytes_feature(sflow),
-      'vmax':_int64_feature(vmax)
+      'vmax':_bytes_feature(vmax)
       })) 
     writer.write(example.SerializeToString()) 
