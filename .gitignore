@@ -105,7 +105,8 @@ venv.bak/
 
 # img_data
 *.png
-*.txt
+#*.txt
+
 
 Adata/
 steady/

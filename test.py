@@ -153,14 +153,14 @@ sflow_true = load_flow(flow_name, shape)
 # calc logits 
 vmax_0 = []
 vmax_1 = []
-vmax_2 = []
-v_0 = 0
-v_1 = 1
-v_2 = 2
+#vmax_2 = []
+v_0 = 0.3
+v_1 = 1.5
+#v_2 = 2
 for i in range(1024):
     vmax_0.append(v_0)
     vmax_1.append(v_1)
-    vmax_2.append(v_2)
+#vmax_2.append(v_2)
 
 
 # In[9]:
@@ -168,7 +168,7 @@ for i in range(1024):
 
 sflow_generated_1 = sess.run(sflow_p,feed_dict={X: boundary_np,v:[vmax_0]})[0]
 sflow_generated_2 = sess.run(sflow_p,feed_dict={X: boundary_np,v:[vmax_1]})[0]
-sflow_generated_3 = sess.run(sflow_p,feed_dict={X: boundary_np,v:[vmax_2]})[0]
+#sflow_generated_3 = sess.run(sflow_p,feed_dict={X: boundary_np,v:[vmax_2]})[0]
 # print(sflow_generated_1)
 
 
@@ -177,7 +177,7 @@ sflow_generated_3 = sess.run(sflow_p,feed_dict={X: boundary_np,v:[vmax_2]})[0]
 
 
 # convert to display 
-sflow_plot = np.concatenate([sflow_true, sflow_generated_3 , sflow_true - sflow_generated_3], axis=1) 
+sflow_plot = np.concatenate([sflow_true,sflow_generated_1,sflow_generated_2], axis=1) 
 boundary_concat = np.concatenate(3*[boundary_np], axis=2) 
 sflow_plot = np.sqrt(np.square(sflow_plot[:,:,0]) + np.square(sflow_plot[:,:,1])) - .05 *boundary_concat[0,:,:,0]
 
