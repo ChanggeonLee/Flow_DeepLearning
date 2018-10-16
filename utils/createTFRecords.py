@@ -42,11 +42,11 @@ for  filename in tqdm(train_filename):
     sflow = load_flow(flow_name, shape)
     vmax = []
     if "0.01" in run:
-      v = 0.
+      v = 0.01
     elif "0.05" in run:
-      v = 1.
+      v = 0.05
     elif "0.1" in run:
-      v = 2.
+      v = 0.1
 
     for i in range(1024):
       vmax.append(v)
