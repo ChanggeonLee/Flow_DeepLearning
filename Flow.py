@@ -258,7 +258,7 @@ tf.train.start_queue_runners(sess=sess)
 # In[20]:
 
 
-steps = 3000
+steps = 10000
 
 min_cost = 10000
 for epoch in range(steps):
