@@ -260,13 +260,17 @@ tf.train.start_queue_runners(sess=sess)
 
 steps = 3000
 
-for epoch in range(steps):    
+min_cost = 10000
+for epoch in range(steps):
   total_cost = 0
   _, cost_val = sess.run([total_loss, loss],feed_dict={})
   total_cost += cost_val
+  if min_cost > total_cost:
+    print("saver point")
+    min_cost = total_cost
+    saver.save(sess, "./model_save/model.ckpt")
 
   print('Epoch:', '%04d' % (epoch + 1),
         'Avg. cost =', '{:f}'.format(total_cost))
-print("최적화 완료") 
-saver.save(sess, "./model_save/model.ckpt")
+print("최적화 완료")
 
