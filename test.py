@@ -70,21 +70,21 @@ L3 = tf.nn.relu(tf.matmul(L2_flat, W3) + b3)
 L3 = tf.nn.dropout(L3, keep_prob=keep_prob)
 
 #L3 = tf.add(L3 , v)
-L3 = tf.concat([L3,v],0)
+L3 = tf.concat([L3,v],1)
 
 # L3 = tf.divide(L3,y)
-S1, S2 = tf.split(L3, [512, 512], 1)
+S1, S2 = tf.split(L3, [1024, 1024], 1)
 
-S1= tf.reshape(S1,[n_batch,1,1,512])
-S2= tf.reshape(S2,[n_batch,1,1,512])
+S1= tf.reshape(S1,[n_batch,1,1,1024])
+S2= tf.reshape(S2,[n_batch,1,1,1024])
 
 # deconv1
-W4_1 = tf.Variable(tf.random_normal([8,8,512,512], stddev=0.01))
+W4_1 = tf.Variable(tf.random_normal([8,8,512,1024], stddev=0.01))
 L4_1 = tf.nn.conv2d_transpose(S1,W4_1,output_shape=[n_batch,8,8,512],strides=[1,8, 8, 1], padding='SAME')
 L4_1 = tf.nn.relu(L4_1)
 L4_1 = tf.nn.dropout(L4_1, keep_prob)
 
-W4_2 = tf.Variable(tf.random_normal([8,8,512,512], stddev=0.01))
+W4_2 = tf.Variable(tf.random_normal([8,8,512,1024], stddev=0.01))
 L4_2 = tf.nn.conv2d_transpose(S2,W4_2,output_shape=[n_batch,8,8,512],strides=[1,8, 8, 1], padding='SAME')
 L4_2 = tf.nn.relu(L4_2)
 L4_2 = tf.nn.dropout(L4_2, keep_prob)
