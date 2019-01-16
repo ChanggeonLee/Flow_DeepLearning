@@ -69,7 +69,8 @@ b3 = tf.Variable(tf.random_normal([1024]))
 L3 = tf.nn.relu(tf.matmul(L2_flat, W3) + b3)
 L3 = tf.nn.dropout(L3, keep_prob=keep_prob)
 
-L3 = tf.add(L3 , v)
+#L3 = tf.add(L3 , v)
+L3 = tf.concat([L3,v],0)
 
 # L3 = tf.divide(L3,y)
 S1, S2 = tf.split(L3, [512, 512], 1)
@@ -143,14 +144,14 @@ saver.restore(sess, "./model_save/model.ckpt")
 #test
 shape = [128,256]
 
-flow_name0 = './fluid0.06.h5'
+flow_name0 = './fluid_flow_0002.h5'
 boundary_np0 = load_boundary(flow_name0, shape).reshape([1, shape[0], shape[1], 1])
 sflow_true0 = load_flow(flow_name0, shape)
 
 
-flow_name1 = './fluid0.02.h5'
-boundary_np1 = load_boundary(flow_name1, shape).reshape([1, shape[0], shape[1], 1])
-sflow_true1 = load_flow(flow_name1, shape)
+#flow_name1 = './fluid0.02.h5'
+#boundary_np1 = load_boundary(flow_name1, shape).reshape([1, shape[0], shape[1], 1])
+#sflow_true1 = load_flow(flow_name1, shape)
 
 
 #flow_name0 = './fluid0.06.h5'
@@ -162,14 +163,14 @@ sflow_true1 = load_flow(flow_name1, shape)
 
 # calc logits 
 vmax_0 = []
-vmax_1 = []
+#vmax_1 = []
 #vmax_2 = []
-v_0 = 0.06
-v_1 = 0.02
+v_0 = 0.1
+#v_1 = 0.02
 #v_2 = 2
 for i in range(1024):
   vmax_0.append(v_0)
-  vmax_1.append(v_1)
+# vmax_1.append(v_1)
 #vmax_2.append(v_2)
 
 
@@ -177,7 +178,7 @@ for i in range(1024):
 
 
 sflow_generated_0 = sess.run(sflow_p,feed_dict={X: boundary_np0,v:[vmax_0]})[0]
-sflow_generated_1 = sess.run(sflow_p,feed_dict={X: boundary_np1,v:[vmax_1]})[0]
+#sflow_generated_1 = sess.run(sflow_p,feed_dict={X: boundary_np1,v:[vmax_1]})[0]
 #sflow_generated_3 = sess.run(sflow_p,feed_dict={X: boundary_np,v:[vmax_2]})[0]
 # print(sflow_generated_1)
 
@@ -190,15 +191,15 @@ sflow_plot = np.concatenate([sflow_true0,sflow_generated_0,sflow_true0 - sflow_g
 boundary_concat = np.concatenate(3*[boundary_np0], axis=2) 
 sflow_plot0 = np.sqrt(np.square(sflow_plot[:,:,0]) + np.square(sflow_plot[:,:,1])) - .05 *boundary_concat[0,:,:,0]
 
-sflow_plot = np.concatenate([sflow_true1,sflow_generated_1,sflow_true1 - sflow_generated_1], axis=1) 
-boundary_concat = np.concatenate(3*[boundary_np1], axis=2) 
-sflow_plot1 = np.sqrt(np.square(sflow_plot[:,:,0]) + np.square(sflow_plot[:,:,1])) - .05 *boundary_concat[0,:,:,0]
-fig, (ax0, ax1) = plt.subplots(2, 1)
+#sflow_plot = np.concatenate([sflow_true1,sflow_generated_1,sflow_true1 - sflow_generated_1], axis=1) 
+#boundary_concat = np.concatenate(3*[boundary_np1], axis=2) 
+#sflow_plot1 = np.sqrt(np.square(sflow_plot[:,:,0]) + np.square(sflow_plot[:,:,1])) - .05 *boundary_concat[0,:,:,0]
+fig, (ax0) = plt.subplots(1, 1)
 
 # display it
 #plt.imshow(sflow_plot)
 ax0.imshow(sflow_plot0)
-ax1.imshow(sflow_plot1)
+#ax1.imshow(sflow_plot1)
 #plt.colorbar()
 plt.show()
 

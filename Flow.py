@@ -139,8 +139,8 @@ b3 = tf.Variable(tf.random_normal([1024]))
 L3 = tf.nn.relu(tf.matmul(L2_flat, W3) + b3)
 L3 = tf.nn.dropout(L3, keep_prob=keep_prob)
 
-L3 = tf.add(L3 , v)
-
+#L3 = tf.add(L3 , v)
+L3 = tf.concat([L3,v],0)
 
 # In[8]:
 
@@ -166,7 +166,7 @@ L4_1 = tf.nn.relu(L4_1)
 L4_1 = tf.nn.dropout(L4_1, keep_prob)
 
 W4_2 = tf.Variable(tf.random_normal([8,8,512,512], stddev=0.01))
-L4_2 = tf.nn.conv2d_transpose(S2,W4_2,output_shape=[n_batch,8,8,512],strides=[1,8, 8, 1], padding='SAME')
+L4_2 = tf.nn.conv2d_transpose(S1,W4_2,output_shape=[n_batch,8,8,512],strides=[1,8, 8, 1], padding='SAME')
 L4_2 = tf.nn.relu(L4_2)
 L4_2 = tf.nn.dropout(L4_2, keep_prob)
 
@@ -220,7 +220,9 @@ L7_2 = tf.nn.dropout(L7_2, keep_prob)
 sflow_p = tf.stack([L7_1 , L7_2] , axis=3)
 sflow_p = tf.reshape(sflow_p , [n_batch,128,256,2])
 # loss = tf.reduce_mean(tf.square(sflow_p - sflow))
-loss = tf.nn.l2_loss(sflow_p - sflow)
+#loss = tf.nn.l2_loss(sflow_p - sflow)
+loss = tf.nn.l2_loss(sflow - sflow_p)
+#loss = tf.reduce_mean(tf.pow(sflow - sflow_p,2))
 
 
 # In[15]:
@@ -265,10 +267,10 @@ for epoch in range(steps):
   total_cost = 0
   _, cost_val = sess.run([total_loss, loss],feed_dict={})
   total_cost += cost_val
-  if min_cost > total_cost:
-    print("saver point")
-    min_cost = total_cost
-    saver.save(sess, "./model_save/model.ckpt")
+#if min_cost > total_cost:
+  print("saver point")
+  min_cost = total_cost
+  saver.save(sess, "./model_save/model.ckpt")
 
   print('Epoch:', '%04d' % (epoch + 1),
         'Avg. cost =', '{:f}'.format(total_cost))
