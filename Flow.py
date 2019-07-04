@@ -219,7 +219,6 @@ L7_2 = tf.nn.dropout(L7_2, keep_prob)
 
 sflow_p = tf.stack([L7_1 , L7_2] , axis=3)
 sflow_p = tf.reshape(sflow_p , [n_batch,128,256,2])
-# loss = tf.reduce_mean(tf.square(sflow_p - sflow))
 loss = tf.nn.l2_loss(sflow_p - sflow)
 
 
@@ -269,8 +268,12 @@ for epoch in range(steps):
     print("saver point")
     min_cost = total_cost
     saver.save(sess, "./model_save/model.ckpt")
+    print('Epoch:', '%04d' % (epoch + 1),
+          'Avg. cost =', '{:f}'.format(total_cost))
 
-  print('Epoch:', '%04d' % (epoch + 1),
-        'Avg. cost =', '{:f}'.format(total_cost))
+  if epoch%100 == 0:
+    print('Epoch:', '%04d' % (epoch + 1),
+          'Avg. cost =', '{:f}'.format(total_cost))
+
 print("최적화 완료")
 
