@@ -222,7 +222,7 @@ fig, (ax0, ax1, ax2) = plt.subplots(3, 1)
 #sflow_plot = np.concatenate([sflow_true1,sflow_generated_1,sflow_true1 - sflow_generated_1], axis=1) 
 #boundary_concat = np.concatenate(3*[boundary_np1], axis=2) 
 #sflow_plot1 = np.sqrt(np.square(sflow_plot[:,:,0]) + np.square(sflow_plot[:,:,1])) - .05 *boundary_concat[0,:,:,0]
-fig, (ax0) = plt.subplots(1, 1)
+#fig, (ax0) = plt.subplots(1, 1)
 # display it
 #plt.imshow(sflow_plot)
 ax0.imshow(sflow_plot0)
