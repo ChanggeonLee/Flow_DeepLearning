@@ -110,7 +110,6 @@ venv.bak/
 
 Adata/
 steady/
-*.h5
 model_save/
 data/
 model/
