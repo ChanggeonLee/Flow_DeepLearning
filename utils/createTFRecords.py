@@ -29,7 +29,7 @@ shape = [128, 256]
 frames = np.zeros((shape[0], shape[1], 1))
 
 # list of files
-train_filename = glb('/data/fluid_flow_steady_state_128x128_/*') 
+train_filename = glb('../data/fluid_flow_steady_state_128x128_/*') 
 
 for  filename in tqdm(train_filename):  
   filename += "/*"
